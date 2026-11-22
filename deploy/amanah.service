@@ -1,0 +1,28 @@
+# وحدة systemd بديلة عن Docker (تشغيل مباشر على خادم Ubuntu)
+# /etc/systemd/system/amanah.service
+[Unit]
+Description=Amanah Operations (Next.js) + WhatsApp linked device
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=amanah
+WorkingDirectory=/opt/amanah
+EnvironmentFile=/opt/amanah/.env.production
+Environment=NODE_ENV=production
+Environment=DATA_DIR=/var/lib/amanah
+Environment=WA_AUTH_DIR=/var/lib/amanah/wa-auth
+ExecStart=/usr/bin/npm run start
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=amanah
+
+# صلاحيات محدودة
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

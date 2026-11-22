@@ -1,0 +1,34 @@
+# HTTPS تلقائي (Let's Encrypt) + تمرير إلى تطبيق Next
+{
+	email {$ACME_EMAIL}
+	servers {
+		protocols h1 h2
+	}
+}
+
+{$DOMAIN} {
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "SAMEORIGIN"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+	# الملفات الكبيرة/الرفع (فواتير PDF مثلًا)
+	request_body {
+		max_size 25MB
+	}
+	reverse_proxy app:3000 {
+		# واتساب WebSocket للجلسة يحتاج مهلة أطول
+		transport http {
+			read_timeout 0
+		}
+	}
+	log {
+		output file /data/access.log {
+			roll_size 20mb
+			roll_keep 5
+		}
+	}
+}

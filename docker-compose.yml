@@ -1,0 +1,48 @@
+services:
+  app:
+    build: .
+    image: amanah-operations:latest
+    container_name: amanah-app
+    restart: always
+    env_file: .env.production
+    environment:
+      NODE_ENV: production
+      DATA_DIR: /data
+      WA_AUTH_DIR: /data/wa-auth
+    volumes:
+      - amanah-data:/data          # الشيت + جلسة واتساب: تبقى بعد إعادة النشر
+    expose:
+      - "3000"
+    ports:
+      - "127.0.0.1:3000:3000"      # للنفاذ المباشر/التصحيح فقط — Caddy يمرّر البقية
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:3000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 45s
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: amanah-caddy
+    restart: always
+    depends_on:
+      - app
+    environment:
+      DOMAIN: ${DOMAIN:?ضع اسم نطاقك في .env.production}
+      ACME_EMAIL: ${ACME_EMAIL:-admin@example.com}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - amanah-caddy:/data
+      - amanah-caddy-config:/config
+
+volumes:
+  amanah-data:
+  amanah-caddy:
+  amanah-caddy-config:

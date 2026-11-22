@@ -1,0 +1,31 @@
+{
+  "name": "amanah-operations",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -H 0.0.0.0",
+    "build": "next build",
+    "start": "next start -H 0.0.0.0 -p 3000",
+    "typecheck": "tsc --noEmit",
+    "docker:up": "docker compose up -d --build",
+    "docker:logs": "docker compose logs -f app",
+    "docker:down": "docker compose down"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^7.0.0-rc14",
+    "exceljs": "^4.4.0",
+    "jszip": "^3.10.2",
+    "next": "^15.5.29",
+    "pino": "^10.4.0",
+    "qrcode": "^1.5.4",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.10.7",
+    "@types/qrcode": "^1.5.6",
+    "@types/react": "19.0.7",
+    "@types/react-dom": "19.0.3",
+    "typescript": "5.7.3"
+  }
+}

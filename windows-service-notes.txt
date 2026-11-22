@@ -1,0 +1,8 @@
+تشغيل الموقع دائمًا على ويندوز
+------------------------------
+الطريقة الموصى بها (تلقائية): انقر يمين على windows\install-service.bat ← Run as administrator
+ثم إدارة الخدمة بالأوامر:  net start AlNasrOps  /  net stop AlNasrOps  /  Get-Service AlNasrOps
+السجلات في مجلد logs. للإزالة: windows\uninstall-service.bat (كمسؤول).
+
+بديل بدون تنزيل: windows\install-startup-task.ps1 (Run with PowerShell كمسؤول)
+بديل يدوي: nssm.exe install AlNasrOps — التفاصيل في WINDOWS.md القسم 8.

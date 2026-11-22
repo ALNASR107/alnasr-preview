@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: alnasr-preview
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: npx next start -H 0.0.0.0 -p $PORT
+    envVars:
+      - key: DEMO_MODE
+        value: '1'
+      - key: DEMO_OPS
+        value: '0'
+      - key: WA_AUTO_CONNECT
+        value: '0'
+      - key: WA_INGEST_ENABLED
+        value: '0'
+      - key: NODE_VERSION
+        value: '22'
